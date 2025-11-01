@@ -14,16 +14,21 @@ const toursData = [
 
 function App() {
   const [tours, setTours] = useState(toursData);
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState({});
 
   const removeTour = (id) => {
     setTours(tours.filter((tour) => tour.id !== id));
+  };
+
+  const toggleShowMore = (id) => {
+    setShowMore((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
     <div id="main">
       {tours.map((tour) => {
         const { id, name, image, price, description } = tour;
+        const isExpanded = showMore[id];
         return (
           <div key={id} className="tour-item">
             <h2>{name}</h2>
@@ -31,13 +36,16 @@ function App() {
             <p>Price: {price}</p>
 
             <p id={`tour-item-para-${id}`}>
-              {showMore
+              {isExpanded
                 ? description
-                : `${description.substring(0, 200)}...`}
+                : `${description.split(" ").slice(0, 200).join(" ")}...`}
             </p>
 
-            <button onClick={() => setShowMore(!showMore)}>
-              {showMore ? "Show less" : "Read more"}
+            <button
+              id={`see-more-${id}`}
+              onClick={() => toggleShowMore(id)}
+            >
+              {isExpanded ? "Show less" : "Read more"}
             </button>
 
             <button id={`delete-btn-${id}`} onClick={() => removeTour(id)}>
