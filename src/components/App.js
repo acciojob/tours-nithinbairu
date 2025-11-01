@@ -38,7 +38,7 @@ function App() {
             <p id={`tour-item-para-${id}`}>
               {isExpanded
                 ? description
-                : `${description.split(" ").slice(0, 200).join(" ")}...`}
+                : `${description.substring(0, 200)}...`}
             </p>
 
             <button
